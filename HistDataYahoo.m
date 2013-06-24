@@ -1,4 +1,4 @@
-function S = HistDataYahoo(symList,sDate,eDate,freq)
+function S = HistDataYahoo(symList,sDate,eDate,freq,dateFmt)
 %HistDataYahoo - retrieve historical data from Yahoo! Finance for a single
 %   or multiple symbols within a range date for a custom time frame (daily,weekly,monthly)
 %   Returns the adjusted prices (dividends/splits) for Open, High, Low, Close, Volume
@@ -10,10 +10,11 @@ function S = HistDataYahoo(symList,sDate,eDate,freq)
 %
 %   symList (string/cell of strings): ticker list. It cannot be empty
 %   sDate (string): start date with format YYYYMMDD (ie. 20130621)
-%                   Deafult = last year
+%                   Default = last year
 %   eDate (string): last date with format YYYYMMDD. Default = yesterday
 %   freq (string): time frame 'd' (daily) or 'w' (weekly) or 'm' (monthly)
 %                  Default = 'd'
+%   dateFmt (string): convert yahoo format YYYY-MM-DD to custom format
 %
 %   OUTPUT:
 %
@@ -37,10 +38,7 @@ function S = HistDataYahoo(symList,sDate,eDate,freq)
 %   S = HistDataYahoo('AAPL','20130102','20130615')
 %   S = HistDataYahoo('AAPL','20130102','20130615','w')
 %   S = HistDataYahoo({'AAPL','MSFT','SPX'},'20130102','20130615','m')
-
-%   LOG:
-%   
-%   $Revision: 0.1 - $Date: 20130621 - Published
+%   S = HistDataYahoo({'AAPL','MSFT','SPX'},'20130102','20130615','m','dd-mmm-yyyy')
 
 %check inputs
 if ~exist('symList','var') || (~ischar(symList) &&  ~iscell(symList)) || isempty(symList)
@@ -61,8 +59,6 @@ if ~exist('eDate','var') || isempty(sDate)
 else
     edt = datevec(eDate,'yyyymmdd');
 end
-
-%manage date to 
 if ~exist('freq','var') || isempty(freq)
     f = 'd';
 else
@@ -71,6 +67,11 @@ else
     else
         f = lower(freq);
     end
+end
+if ~exist('dateFmt','var') || isempty(dateFmt)
+    dfmt = 'mm/dd/yyyy';
+else
+    dfmt = dateFmt;
 end
 
 %set main URL string
@@ -130,6 +131,8 @@ for i = 1:length(ticker)
     
     %flip data from oldest to newest
     hDate = flipud(tDate);
+    %convert format
+    hDate = cellstr(datestr(hDate,dfmt));
     hOpen = flipud(tOpen);
     hHigh = flipud(tHigh);
     hLow = flipud(tLow);
