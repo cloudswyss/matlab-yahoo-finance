@@ -1,4 +1,4 @@
 matlab-yahoo-finance
 ====================
 
-retrieve historical data from Yahoo! Finance
+Utility functions in Matlab to retrieve and managed Yahoo! Finance data
