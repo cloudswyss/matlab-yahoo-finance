@@ -11,7 +11,7 @@ It returns all data in CSV-format quickly parsable inside Matlab without write t
 The code uses java.io.BufferedReader class to reads text from a character-input stream.
 
 OUTPUT: Ticker, Date, Open(O), High(H), Low(L), Close(C), Volume, Frequency.
-OHLC are already asjusted for dividends/splits. Frequency is timeframe: d/w/m (daily,weekly,monthly)
+OHLC are already adjusted for dividends/splits. Frequency is timeframe: d/w/m (daily,weekly,monthly)
 
 The functions supports MULTI-SYMBOLS request {'AAPL','MSFT',...}
 
